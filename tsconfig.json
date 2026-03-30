@@ -10,6 +10,7 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
+    "noImplicitAny": false,
     "incremental": true,
     "jsx": "react-jsx",
     "module": "esnext",
