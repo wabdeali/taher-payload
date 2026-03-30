@@ -1,9 +1,9 @@
 'use client'
 
-import type { Media as MediaType, Product } from '@/payload-types'
+import type { Product } from '@/payload-types'
 
-import { Media } from '@/components/Media'
 import { GridTileImage } from '@/components/Grid/tile'
+import { Media } from '@/components/Media'
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 
@@ -49,11 +49,12 @@ export const Gallery: React.FC<Props> = ({ gallery }) => {
 
   return (
     <div>
-      <div className="relative w-full overflow-hidden mb-8">
+      <div className="relative w-full overflow-hidden mb-8 aspect-[4/3]">
         <Media
           resource={gallery[current].image}
           className="w-full"
-          imgClassName="w-full rounded-lg"
+          imgClassName="w-full rounded-lg object-contain"
+          fill
         />
       </div>
 

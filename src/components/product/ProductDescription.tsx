@@ -1,16 +1,22 @@
 'use client'
 import type { Product, Variant } from '@/payload-types'
 
-import { RichText } from '@/components/RichText'
 import { AddToCart } from '@/components/Cart/AddToCart'
 import { Price } from '@/components/Price'
-import React, { Suspense } from 'react'
+import { RichText } from '@/components/RichText'
+import { Suspense } from 'react'
 
-import { VariantSelector } from './VariantSelector'
-import { useCurrency } from '@payloadcms/plugin-ecommerce/client/react'
 import { StockIndicator } from '@/components/product/StockIndicator'
+import { useCurrency } from '@payloadcms/plugin-ecommerce/client/react'
+import { VariantSelector } from './VariantSelector'
 
-export function ProductDescription({ product }: { product: Product }) {
+export function ProductDescription({
+  product,
+  checkoutDisabled,
+}: {
+  product: Product
+  checkoutDisabled: boolean
+}) {
   const { currency } = useCurrency()
   let amount = 0,
     lowestAmount = 0,
@@ -56,11 +62,11 @@ export function ProductDescription({ product }: { product: Product }) {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
         <h1 className="text-2xl font-medium">{product.title}</h1>
         <div className="uppercase font-mono">
-          {hasVariants ? (
+          {hasVariants && highestAmount && lowestAmount ? (
             <Price highestAmount={highestAmount} lowestAmount={lowestAmount} />
-          ) : (
+          ) : amount ? (
             <Price amount={amount} />
-          )}
+          ) : null}
         </div>
       </div>
       {product.description ? (
@@ -76,17 +82,21 @@ export function ProductDescription({ product }: { product: Product }) {
           <hr />
         </>
       )}
-      <div className="flex items-center justify-between">
-        <Suspense fallback={null}>
-          <StockIndicator product={product} />
-        </Suspense>
-      </div>
+      {!checkoutDisabled ? (
+        <>
+          <div className="flex items-center justify-between">
+            <Suspense fallback={null}>
+              <StockIndicator product={product} />
+            </Suspense>
+          </div>
 
-      <div className="flex items-center justify-between">
-        <Suspense fallback={null}>
-          <AddToCart product={product} />
-        </Suspense>
-      </div>
+          <div className="flex items-center justify-between">
+            <Suspense fallback={null}>
+              <AddToCart product={product} />
+            </Suspense>
+          </div>
+        </>
+      ) : null}
     </div>
   )
 }

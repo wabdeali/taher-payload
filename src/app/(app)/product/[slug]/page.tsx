@@ -4,15 +4,16 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { GridTileImage } from '@/components/Grid/tile'
 import { Gallery } from '@/components/product/Gallery'
 import { ProductDescription } from '@/components/product/ProductDescription'
+import { Button } from '@/components/ui/button'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import configPromise from '@payload-config'
-import { getPayload } from 'payload'
+import { ChevronLeftIcon } from 'lucide-react'
+import { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { getPayload } from 'payload'
 import React, { Suspense } from 'react'
-import { Button } from '@/components/ui/button'
-import { ChevronLeftIcon } from 'lucide-react'
-import { Metadata } from 'next'
 
 type Args = {
   params: Promise<{
@@ -62,6 +63,7 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
 export default async function ProductPage({ params }: Args) {
   const { slug } = await params
   const product = await queryProductBySlug({ slug })
+  const checkoutDisabled = await getCachedGlobal('checkoutToggle', 1)()
 
   if (!product) return notFound()
 
@@ -119,7 +121,7 @@ export default async function ProductPage({ params }: Args) {
       />
       <div className="container pt-8 pb-8">
         <Button asChild variant="ghost" className="mb-4">
-          <Link href="/shop">
+          <Link href="/products">
             <ChevronLeftIcon />
             All products
           </Link>
@@ -136,7 +138,10 @@ export default async function ProductPage({ params }: Args) {
           </div>
 
           <div className="basis-full lg:basis-1/2">
-            <ProductDescription product={product} />
+            <ProductDescription
+              product={product}
+              checkoutDisabled={checkoutDisabled.checkoutToggle!!}
+            />
           </div>
         </div>
       </div>
@@ -166,7 +171,7 @@ function RelatedProducts({ products }: { products: Product[] }) {
             className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"
             key={product.id}
           >
-            <Link className="relative h-full w-full" href={`/products/${product.slug}`}>
+            <Link className="relative h-full w-full" href={`/product/${product.slug}`}>
               <GridTileImage
                 label={{
                   amount: product.priceInUSD!,

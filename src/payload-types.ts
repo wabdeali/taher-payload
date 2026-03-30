@@ -131,10 +131,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    checkoutToggle: CheckoutToggle;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    checkoutToggle: CheckoutToggleSelect<false> | CheckoutToggleSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1836,6 +1838,19 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkoutToggle".
+ */
+export interface CheckoutToggle {
+  id: string;
+  /**
+   * If disabled, the checkout process will be disabled and the "Add to Cart" button will be hidden.
+   */
+  checkoutToggle?: boolean | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1876,6 +1891,16 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "checkoutToggle_select".
+ */
+export interface CheckoutToggleSelect<T extends boolean = true> {
+  checkoutToggle?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

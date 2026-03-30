@@ -1,22 +1,23 @@
 'use client'
-import { CMSLink } from '@/components/Link'
 import { Cart } from '@/components/Cart'
 import { OpenCartButton } from '@/components/Cart/OpenCart'
+import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 
-import { MobileMenu } from './MobileMenu'
 import type { Header } from 'src/payload-types'
+import { MobileMenu } from './MobileMenu'
 
 import { LogoIcon } from '@/components/icons/logo'
-import { usePathname } from 'next/navigation'
 import { cn } from '@/utilities/cn'
+import { usePathname } from 'next/navigation'
 
 type Props = {
   header: Header
+  checkoutDisabled: boolean
 }
 
-export function HeaderClient({ header }: Props) {
+export function HeaderClient({ header, checkoutDisabled }: Props) {
   const menu = header.navItems || []
   const pathname = usePathname()
 
@@ -55,9 +56,11 @@ export function HeaderClient({ header }: Props) {
           </div>
 
           <div className="flex justify-end md:w-1/3 gap-4">
-            <Suspense fallback={<OpenCartButton />}>
-              <Cart />
-            </Suspense>
+            {!checkoutDisabled && (
+              <Suspense fallback={<OpenCartButton />}>
+                <Cart />
+              </Suspense>
+            )}
           </div>
         </div>
       </nav>
