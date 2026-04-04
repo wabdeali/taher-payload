@@ -27,19 +27,19 @@ export const InitTheme: React.FC = () => {
     }
 
     var themeToSet = '${defaultTheme}'
-    var preference = window.localStorage.getItem('${themeLocalStorageKey}')
+    // var preference = window.localStorage.getItem('${themeLocalStorageKey}')
 
-    if (themeIsValid(preference)) {
-      themeToSet = preference
-    } else {
-      var implicitPreference = getImplicitPreference()
+    // if (themeIsValid(preference)) {
+    //   themeToSet = preference
+    // } else {
+    //   var implicitPreference = getImplicitPreference()
 
-      if (implicitPreference) {
-        themeToSet = implicitPreference
-      }
-    }
+    //   if (implicitPreference) {
+    //     themeToSet = implicitPreference
+    //   }
+    // }
 
-    document.documentElement.setAttribute('data-theme', themeToSet)
+  document.documentElement.setAttribute('data-theme', themeToSet)
   })();
   `,
       }}
